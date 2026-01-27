@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Student {
+    int id;
+    int vize;
+    int final;
+    struct Student *next;
+};
+
+struct Student *Push(struct Student *top, int id, int vize, int final) {
+    struct Student *yeni = (struct Student *)malloc(sizeof(struct Student));
+    yeni->id = id;
+    yeni->vize = vize;
+    yeni->final = final;
+    yeni->next = top;
+    return yeni;
+}
+
+struct Student *Pop(struct Student *top, int *id, int *vize, int *final) {
+    if (top == NULL) return NULL;
+    struct Student *temp = top;
+    *id = temp->id;
+    *vize = temp->vize;
+    *final = temp->final;
+    top = top->next;
+    free(temp);
+    return top;
+}
+
+int main() {
+    struct Student *ilk = NULL;
+    int id, vize, final, a = 1, sec;
+
+    while (a != 0) {
+        printf("\n1-Ekle (Push)\n2-Cikar (Pop)\n3-Listele\nSecim: ");
+        scanf("%d", &sec);
+
+        if (sec == 1) {
+            printf("Numara, Vize ve Final giriniz: ");
+            scanf("%d %d %d", &id, &vize, &final);
+            ilk = Push(ilk, id, vize, final);
+        } 
+        else if (sec == 2) {
+            if (ilk != NULL) {
+                ilk = Pop(ilk, &id, &vize, &final);
+                printf("Cikarilan Ogrenci: %d\n", id);
+            } else {
+                printf("Liste bos!\n");
+            }
+        } 
+        else if (sec == 3) {
+            struct Student *temp = ilk;
+            while (temp != NULL) {
+                printf("ID: %d | Vize: %d | Final: %d\n", temp->id, temp->vize, temp->final);
+                temp = temp->next;
+            }
+        }
+
+        printf("Devam etmek icin 1, cikmak icin 0: ");
+        scanf("%d", &a);
+    }
+
+    return 0;
+}
