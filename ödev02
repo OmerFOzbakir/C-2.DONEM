@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int sayi;
+    struct Node *next;
+    struct Node *prev;
+};
+
+int main() {
+    struct Node *ilk = NULL;
+    struct Node *ptr = NULL;
+    struct Node *temp = NULL;
+    struct Node *BUL = NULL;
+
+    int sayi = 1, aranan;
+
+    while (sayi != 0) {
+        printf("Lutfen Tam Sayi Giriniz (Cikis: 0): ");
+        scanf("%d", &sayi);
+
+        if (sayi == 0) break;
+
+        if (ilk == NULL) {
+            ilk = (struct Node*)malloc(sizeof(struct Node));
+            ilk->sayi = sayi;
+            ilk->next = NULL;
+            ilk->prev = NULL;
+            ptr = ilk;
+        } else {
+            ptr->next = (struct Node*)malloc(sizeof(struct Node));
+            ptr->next->prev = ptr;
+            ptr = ptr->next;
+            ptr->sayi = sayi;
+            ptr->next = NULL;
+        }
+    }
+
+    printf("Aramak Istediginiz Sayiyi Giriniz: ");
+    scanf("%d", &aranan);
+
+    temp = ilk;
+    while (temp != NULL) {
+        if (temp->sayi == aranan) {
+            BUL = temp;
+            break;
+        }
+        temp = temp->next;
+    }
+
+    if (BUL != NULL) {
+        if (BUL == ilk) {
+            ilk = ilk->next;
+            if (ilk != NULL) ilk->prev = NULL;
+        } else {
+            if (BUL->next != NULL) {
+                BUL->prev->next = BUL->next;
+                BUL->next->prev = BUL->prev;
+            } else {
+                BUL->prev->next = NULL;
+            }
+        }
+        free(BUL);
+        printf("\tSilinen Sayi: %d\n", aranan);
+    }
+
+    temp = ilk;
+    while (temp != NULL) {
+        printf("\tListe Sayisi: %d\n", temp->sayi);
+        temp = temp->next;
+    }
+
+    temp = ilk;
+    while (temp != NULL) {
+        struct Node *sonraki = temp->next;
+        free(temp);
+        temp = sonraki;
+    }
+    ilk = NULL;
+
+    return 0;
+}
