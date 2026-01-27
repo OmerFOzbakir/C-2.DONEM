@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+    struct Node *prev;
+};
+
+struct Node *start = NULL;
+
+struct Node* DugumOlustur(int veri) {
+    struct Node *yenidugum = (struct Node*)malloc(sizeof(struct Node));
+    yenidugum->data = veri;
+    yenidugum->next = NULL;
+    yenidugum->prev = NULL;
+    return yenidugum;
+}
+
+void arayaEkle(int kiminOnu, int eklenecek) {
+    if (start == NULL) return;
+
+    struct Node *temp = start;
+    struct Node *yeni = DugumOlustur(eklenecek);
+
+    while (temp != NULL && temp->data != kiminOnu) {
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Deger bulunamadi.\n");
+        free(yeni);
+        return;
+    }
+
+    yeni->next = temp;
+    yeni->prev = temp->prev;
+
+    if (temp->prev != NULL) {
+        temp->prev->next = yeni;
+    } else {
+        start = yeni;
+    }
+    temp->prev = yeni;
+}
+
+void listele() {
+    struct Node *temp = start;
+    while (temp != NULL) {
+        printf("%d <-> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    start = DugumOlustur(10);
+    start->next = DugumOlustur(20);
+    start->next->prev = start;
+
+    int ara, yeni;
+    printf("Hangi sayinin onune ekleme yapilsin: ");
+    scanf("%d", &ara);
+    printf("Eklenecek yeni sayi: ");
+    scanf("%d", &yeni);
+
+    arayaEkle(ara, yeni);
+    listele();
+
+    return 0;
+}
