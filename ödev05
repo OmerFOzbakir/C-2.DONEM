@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct OGRENCI {
+    int id;
+    float vize;
+    float final;
+    float ortalama;
+    struct OGRENCI *next;
+};
+
+int main() {
+    int a, i = 1, m = 1, n = 1;
+    float b, c;
+    struct OGRENCI *ilk = NULL;
+    struct OGRENCI *ptr = NULL;
+    struct OGRENCI *temp = NULL;
+
+    while (m != 0) {
+        printf("\tLutfen %d.Ogrencinin Numarasini Giriniz: ", i);
+        scanf("%d", &a);
+        printf("\tLutfen %d.Ogrencinin Vize Notunu Giriniz: ", i);
+        scanf("%f", &b);
+        printf("\tLutfen %d.Ogrencinin Final Notunu Giriniz: ", i);
+        scanf("%f", &c);
+        
+        float sum = (b + c) / 2;
+
+        if (ilk == NULL) {
+            ilk = (struct OGRENCI *)malloc(sizeof(struct OGRENCI));
+            ilk->id = a;
+            ilk->vize = b;
+            ilk->final = c;
+            ilk->ortalama = sum;
+            ilk->next = NULL;
+            ptr = ilk;
+        } else {
+            ptr->next = (struct OGRENCI *)malloc(sizeof(struct OGRENCI));
+            ptr = ptr->next;
+            ptr->id = a;
+            ptr->vize = b;
+            ptr->final = c;
+            ptr->ortalama = sum;
+            ptr->next = NULL;
+        }
+
+        printf("Devam etmek icin 1, bitirmek icin 0'a basiniz: ");
+        scanf("%d", &m);
+        i++;
+    }
+
+    
+
+    temp = ilk;
+    while (temp != NULL) {
+        printf("\n\t%d. Ogrenci -> No: %d, Vize: %.2f, Final: %.2f, Ort: %.2f\n", n, temp->id, temp->vize, temp->final, temp->ortalama);
+        temp = temp->next;
+        n++;
+    }
+
+    temp = ilk;
+    while (temp != NULL) {
+        struct OGRENCI *sonraki = temp->next;
+        free(temp);
+        temp = sonraki;
+    }
+
+    return 0;
+}
