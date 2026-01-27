@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+unsigned int kaydir(unsigned int x, unsigned int y) {
+    return x << y;
+}
+
+int main() {
+    unsigned int sayi, shift;
+
+    printf("Lutfen Pozitif Bir Sayi Giriniz: ");
+    scanf("%u", &sayi);
+    printf("Lutfen Kaydirmak Istediginiz Miktari Giriniz: ");
+    scanf("%u", &shift);
+
+    printf("\tGirdiginiz Sayi: %u\n", sayi);
+    printf("\tSayinizin %u bit kaydirilmis hali: %u\n", shift, kaydir(sayi, shift));
+
+    return 0;
+}
