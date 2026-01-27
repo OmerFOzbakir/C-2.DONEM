@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int id;
+    float vize;
+    float final;
+    float ortalama;
+    struct Node *next;
+    struct Node *prev;
+};
+
+int main() {
+    int a, m = 1, i = 1, q = 1;
+    float b, c, sum;
+    struct Node *ilk = NULL;
+    struct Node *ptr = NULL;
+    struct Node *temp = NULL;
+
+    while (m != 0) {
+        printf("Lutfen %d. Ogrencinin Id'sini Giriniz: ", i);
+        scanf("%d", &a);
+        printf("Lutfen %d. Ogrencinin Vizesini Giriniz: ", i);
+        scanf("%f", &b);
+        printf("Lutfen %d. Ogrencinin Final Notunu Giriniz: ", i);
+        scanf("%f", &c);
+        
+        sum = (b * 0.4) + (c * 0.6);
+
+        if (ilk == NULL) {
+            ilk = (struct Node *)malloc(sizeof(struct Node));
+            ilk->id = a;
+            ilk->vize = b;
+            ilk->final = c;
+            ilk->ortalama = sum;
+            ilk->next = NULL;
+            ilk->prev = NULL;
+            ptr = ilk;
+        } else {
+            ptr->next = (struct Node *)malloc(sizeof(struct Node));
+            ptr->next->prev = ptr;
+            ptr = ptr->next;
+            ptr->id = a;
+            ptr->vize = b;
+            ptr->final = c;
+            ptr->ortalama = sum;
+            ptr->next = NULL;
+        }
+        
+        i++;
+        printf("Devam etmek icin 1, cikmak icin 0: ");
+        scanf("%d", &m);
+    }
+
+    temp = ilk;
+    while (temp != NULL) {
+        printf("\n%d. Ogrenci -> ID: %d, Vize: %.2f, Final: %.2f, Ort: %.2f", q, temp->id, temp->vize, temp->final, temp->ortalama);
+        temp = temp->next;
+        q++;
+    }
+
+    temp = ilk;
+    while (temp != NULL) {
+        struct Node *next = temp->next;
+        free(temp);
+        temp = next;
+    }
+
+    return 0;
+}
