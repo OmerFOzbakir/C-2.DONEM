@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct program {
+    char sehir[10];
+    int plaka;
+};
+
+int main() {
+    struct program kaydet;
+    FILE *fp;
+    int i;
+
+    if ((fp = fopen("sehirler.dat", "rb")) == NULL) {
+        printf("Dosya Acilamadi!\n");
+        return 1;
+    }
+
+    for (i = 0; i < 10; i++) {
+        printf("Gormek Istediginiz Sehrin Plakasini Giriniz (1-10): ");
+        scanf("%d", &kaydet.plaka);
+
+        while (kaydet.plaka <= 0 || kaydet.plaka > 81) {
+            printf("\tLutfen gecerli bir plaka kodu giriniz: ");
+            scanf("%d", &kaydet.plaka);
+        }
+
+        fseek(fp, (kaydet.plaka - 1) * sizeof(struct program), SEEK_SET);
+        
+        if (fread(&kaydet, sizeof(struct program), 1, fp) == 1) {
+            printf("\t%02d Plakali Sehirimiz: %s\n", kaydet.plaka, kaydet.sehir);
+        } else {
+            printf("\tBu plakaya ait veri bulunamadi.\n");
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
