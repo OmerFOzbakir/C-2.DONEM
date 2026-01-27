@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    int array[100], temp, i, j, min_idx;
+
+    srand(time(NULL));
+    for (j = 0; j < 100; j++) {
+        array[j] = rand() % 100;
+        printf("%d. Sayi: %d\n", j, array[j]);
+    }
+
+    for (i = 0; i < 49; i++) {
+        min_idx = i;
+        for (j = i + 1; j < 50; j++) {
+            if (array[j] > array[min_idx]) {
+                min_idx = j;
+            }
+        }
+        temp = array[min_idx];
+        array[min_idx] = array[i];
+        array[i] = temp;
+    }
+
+    printf("\n--- Buyukten Kucuge (Ilk 50) ---\n");
+    for (i = 0; i < 50; i++) {
+        printf("%d. Sayi: %d\n", i + 1, array[i]);
+    }
+
+    
+
+    for (i = 51; i < 100; i++) {
+        temp = array[i];
+        j = i - 1;
+        while (j >= 50 && array[j] > temp) {
+            array[j + 1] = array[j];
+            j = j - 1;
+        }
+        array[j + 1] = temp;
+    }
+
+    printf("\n--- Kucukten Buyuge (Son 50) ---\n");
+    for (i = 50; i < 100; i++) {
+        printf("%d. Sayi: %d\n", i + 1, array[i]);
+    }
+
+    return 0;
+}
