@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int x;
+    struct Node* next;
+};
+
+int main() {
+    struct Node *ilk = NULL;
+    struct Node *gecici = NULL;
+    struct Node *BUL = NULL;
+    struct Node *ptr = NULL;
+    int aranan, sayi = 1;
+
+    while (sayi != 0) {
+        printf("Sayi Giriniz (Cikis: 0): ");
+        scanf("%d", &sayi);
+
+        if (sayi == 0) break;
+
+        if (ilk == NULL) {
+            ilk = (struct Node*)malloc(sizeof(struct Node));
+            ilk->x = sayi;
+            ilk->next = NULL;
+            ptr = ilk;
+        } else {
+            ptr->next = (struct Node*)malloc(sizeof(struct Node));
+            ptr = ptr->next;
+            ptr->x = sayi;
+            ptr->next = NULL;
+        }
+    }
+
+    printf("Silinecek Sayiyi Giriniz: ");
+    scanf("%d", &aranan);
+
+    gecici = ilk;
+    while (gecici != NULL) {
+        if (gecici->x == aranan) {
+            BUL = gecici;
+            break;
+        }
+        gecici = gecici->next;
+    }
+
+    if (BUL != NULL) {
+        if (BUL == ilk) {
+            ilk = ilk->next;
+            free(BUL);
+        } else {
+            gecici = ilk;
+            while (gecici->next != BUL) {
+                gecici = gecici->next;
+            }
+            gecici->next = BUL->next;
+            free(BUL);
+        }
+        printf("\tSilindi: %d\n", aranan);
+    }
+
+    gecici = ilk;
+    while (gecici != NULL) {
+        printf("\tSayi: %d\n", gecici->x);
+        gecici = gecici->next;
+    }
+
+    while (ilk != NULL) {
+        gecici = ilk;
+        ilk = ilk->next;
+        free(gecici);
+    }
+
+    return 0;
+}
